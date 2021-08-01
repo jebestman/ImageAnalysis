@@ -1,2 +1,2 @@
 # ImageAnalysis
-Authors: A. Hardy, A.Ramakrishnan 
+Authors: A. Hardy, A.Ramakrishnan, J. Bestman
