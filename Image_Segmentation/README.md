@@ -10,7 +10,7 @@ This folder contains the following files:
 
 ## Bestman Lab Code
 
-This code was created to aid in analysis of the cell images taken in the Bestman Lab. The analysis focuses on segmenting the mitochondria along the radial length. Several image segmentation methods were used and tested on the example file "cropped_Projections_of_Dec9_P117_mlsEGFP_uasRFP_D3T4MFLrotcr.Blind_fused1.tif". The code primarily uses skimage for image processing steps. Matplotlib is used for viewing graphs and Napari is used for viewing the images following the image processing operations in a 3D space.
+The goal of this project is to create a semi-automated image segmentation program to aid in analysis of cell images taken in the Bestman Lab. The analysis focuses on segmenting the mitochondria along the radial length. Several image segmentation methods were used and tested on the example file "cropped_Projections_of_Dec9_P117_mlsEGFP_uasRFP_D3T4MFLrotcr.Blind_fused1.tif". All code is based in Python and primarily uses skimage for image processing steps. Matplotlib is used for viewing graphs and Napari is used for viewing the images following the image processing operations in a 3D space.
 
 Image Processing Steps (in order):
 
