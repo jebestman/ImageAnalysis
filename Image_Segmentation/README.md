@@ -28,4 +28,4 @@ Various methods were compared in the main file. For exposure, rescaled intensity
 
 Comparisons between the otsu mask and multiotsu mask were also drawn, with the multiotsu mask yielding better results for the image. To improve the mask, we used a combination of morphological steps (listed above). The resulting mask plus the points on the image are found in the Example_Dec9th_Image.png file.
 
-Future steps include further improving the quality and specificity of the segmentation in addition to having just the region of interest being the in the image files. 
+Future steps include further improving the quality and specificity of the segmentation in addition to having just the region of interest being the in the image files.  Furthermore, segmentation is improved, extract the data from the segmentation.
