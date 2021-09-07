@@ -36,14 +36,14 @@ class ImageProcessing:
 
         fig, ax = plt.subplots(figsize=(8,4))
         
-        ax.hist(self.image.flatten(), log=True)
+        ax.hist(self.image_read().flatten(), log=True)
 
         _ = ax.set_title('Min value: %i \n'
         'Max Value: %i \n'
         'Image shape: %i \n'
-        % (self.image.min(),
-        self.image.max(),
-        self.image.shape))
+        % (self.image_read().min(),
+        self.image_read().max(),
+        self.image_read().shape))
  
 
     def spacing(self,x,y,z):
@@ -70,7 +70,7 @@ class ImageProcessing:
         if image is None:
             intensity_rescaled = skimage.exposure.rescale_intensity(self.image_read())
         else:
-            intensity_rescaled = skimage.exposure.rescale_intensity(self.image)
+            intensity_rescaled = skimage.exposure.rescale_intensity(image)
             
         return intensity_rescaled
 
