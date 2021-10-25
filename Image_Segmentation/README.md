@@ -30,7 +30,7 @@ The goal of this project is to create a semi-automated image segmentation progra
 The sigma for the Denoise Wavelet is calcualted with skimage's built in sigma_estimate tool. The CLAHE mutlitiplied to the sobel filter enhances the contrast of the image. The darker areas surrounded by dark neighbords become darker and the brighter spots surrounded by bright neighbors become enhanced as well. Data is extracted from skimage's built in regionprops feature. 
 The skeleton file is created from the .traces file generated in ImageJ which follows along the radial process of the neuron. This step isolates the multiotsu mask to only look in the area of the skeleton mask. 
 
-The resulting image after these steps can be seen in Example_Dec9th_Image.png.![Example_Dec9th_Image](https://user-images.githubusercontent.com/88122234/127952264-91d76d29-9c1a-461e-9ed3-3ee512f5705f.png)
+The resulting image after these steps can be seen in Example_Image.png.![Example_Image](https://github.com/jebestman/ImageAnalysis/blob/ef513b65dd1c0d910aa4f0294e99c994506ed51c/Image_Segmentation/Example_Image%20File.png)
 
 
 
