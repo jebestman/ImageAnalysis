@@ -21,7 +21,7 @@ The goal of this project is to create a semi-automated image segmentation progra
 - Sobel Filter
 - Adaptive Histogram Equalization multiplied to the sobel filter image
 - Skimage Unsharp
-- Skeleton mask dilated to width 20px
+- Skeleton mask dilated to width ~24px
 - Skeleton mask multiplied to the Unsharp Image to have just the radial process
 - Multiotsu Mask
 - Morphological steps: Binary Closing, Opening, Dilation, and Erosion
