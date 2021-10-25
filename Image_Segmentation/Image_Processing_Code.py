@@ -1,25 +1,17 @@
 import os
 import pandas as pd
 import imageio as io
+from napari import layers
+from napari.plugins.io import save_layers
 import numpy as np
 import napari  
 from skimage import filters, morphology, measure, exposure, segmentation, restoration
-from skimage.exposure.exposure import rescale_intensity
 import skimage.io as skio
-import scipy.stats as st
 from scipy import ndimage as ndi
-
-import matplotlib
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-import plotly
-import plotly.express as px
-import plotly.graph_objects as go
 
 path = str(input('What is the folder path?:'))
 files = os.listdir(path)
-mito_Channel = skio.imread(files[0], plugin = 'tifffile')
+data = skio.imread(files[0], plugin = 'tifffile')
 
 z = int(input('Please input the z spacing for your image.'))
 
@@ -28,22 +20,23 @@ spacing = np.array([z, .184, .184])
 # initializing the viewer
 viewer = napari.Viewer()
 
-viewer.add_image(
-    mito_Channel,
-    scale = spacing
-)
+def add_to_viewer(layer_name):
+    viewer.add_image(
+        layer_name,
+        scale = spacing
+    )
 
-view = str(input('Would you like to view the individual layers? After each operation? Note: It can potential slow down the program \n'
+# adding the raw image to the viewer.
+add_to_viewer(data)
+
+view = str(input('Would you like to view the individual layers ater each operation? Note: It can potential slow down the program \n'
 'if that is done. Otherwise, it will only show you the mask, the mask after morphological operations, labels, and points. Y or N')).upper()
 
 # rescaled intensity
-rescaled_intensity = exposure.rescale_intensity(mito_Channel)
+rescaled_intensity = exposure.rescale_intensity(data)
 
 if view == 'Y':
-    viewer.add_image(
-    rescaled_intensity,
-    scale = spacing
-    )   
+    add_to_viewer(rescaled_intensity)  
 
 # denoiser with the estimated sigma
 sigma_est = restoration.estimate_sigma(rescaled_intensity, average_sigmas=True)
@@ -51,74 +44,50 @@ denoise = restoration.denoise_wavelet(rescaled_intensity, sigma = sigma_est,
 method = 'BayesShrink', mode='soft', rescale_sigma=True)
 
 if view == 'Y':
-    viewer.add_image(
-    denoise,
-    scale = spacing
-)
+    add_to_viewer(denoise)  
 
 # median filter
 median = filters.median(denoise)
 if view == 'Y':
-    viewer.add_image(
-    median,
-    scale = spacing
-)
+    add_to_viewer(median)
 
 # sobel filter
 edges_sobel = filters.sobel(median)
 if view == 'Y':
-    viewer.add_image(
-    median,
-    scale = spacing
-)
+    add_to_viewer(edges_sobel)
 
 # adaptive histogram equalization
 # multiplying the CLAHE to the edges sobel image. 
-data_adap = exposure.equalize_adapthist(mito_Channel)
-multiplied = edges_sobel * data_adap
+AHE = exposure.equalize_adapthist(data)
+multiplied = edges_sobel * AHE
 if view == 'Y':
-    viewer.add_image(
-        multiplied,
-        scale=spacing,
-    )
+    add_to_viewer(multiplied)
 
 unsharp = filters.unsharp_mask(multiplied,radius = 2, amount = 1)
 if view == 'Y':
-    viewer.add_image(
-        unsharp,
-        scale=spacing,
-    )
+    add_to_viewer(unsharp)
 
-skeleton = skio.imread(files[2], plugin='tifffile')
-for i in range(0,10):
+skeleton = skio.imread(files[1], plugin='tifffile')
+for i in range(0,14):
     skeleton = morphology.dilation(skeleton)
     i+=1
 
 median_skel = filters.median(skeleton)
 ROI = unsharp*median_skel
 if view == 'Y':
-    viewer.add_image(
-        ROI,
-        scale=spacing,
-    )
+    add_to_viewer(ROI)
 
 # multiotsu mask
 multiotsu = filters.threshold_multiotsu(ROI, 2)
 multiotsu_mask = ROI > multiotsu
-viewer.add_image(
-        multiotsu_mask,
-        scale=spacing,
-)
+add_to_viewer(multiotsu_mask)
 
 # morphological operations
 multiotsu_closing = morphology.binary_closing(multiotsu_mask)
 multiotsu_opening = morphology.binary_opening(multiotsu_closing)
 multiotsu_dilation = morphology.binary_dilation(multiotsu_opening)
 multiotsu_CODE = morphology.binary_erosion(multiotsu_dilation)
-viewer.add_image(
-        multiotsu_CODE,
-        scale=spacing,
-    )
+add_to_viewer(multiotsu_CODE)
 
 # adding labels and points to the image
 cleared = segmentation.clear_border(multiotsu_CODE)
@@ -141,6 +110,18 @@ viewer.add_points(
         n_dimensional = True,
 )
 
+# saving images
+save_image = str(input('Would you like to save any of the images? Y or N')).upper()
+if save_image == 'Y':
+    image_name = str(input('Please input the name of the layer in napari that you would like to export. This is case sensitive. \n'
+    'If you would like to save all of them, type "All".'))
+    if image_name == 'All':
+        save_layers(path, viewer.layers)
+        print('Images will be saved in the folder provided previously.')
+    else:
+        layers.save(path, image_name)
+        print('The image will be saved in the folder provided previously.')
+
 
 # exporting properties
 
@@ -148,8 +129,9 @@ export = str(input('Would you like to export a csv table of the properties? Y or
 if export == 'Y':
     properties = ['label', 'area', 'bbox_area', 'bbox', 'mean_intensity', 'equivalent_diameter',
     'minor_axis_length', 'major_axis_length', 'centroid']
-    props = measure.regionprops_table(label_image,intensity_image = mito_Channel, properties = properties)
+    props = measure.regionprops_table(label_image,intensity_image = data, properties = properties)
     df = pd.DataFrame(props).set_index('label')
     name = str(input('What would you like to name the file?'))+".xlsx"
-    df.to_excel(path+ '\\' + name)
+    save_location = path + '\\' + name
+    df.to_excel(save_location)
     print('The file has been saved in the same folder as the image.')
