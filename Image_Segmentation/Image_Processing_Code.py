@@ -11,7 +11,7 @@ from scipy import ndimage as ndi
 
 path = str(input('What is the folder path?:'))
 files = os.listdir(path)
-data = skio.imread(files[0], plugin = 'tifffile')
+data = skio.imread(path + '\\'+ files[0], plugin = 'tifffile')
 
 z = int(input('Please input the z spacing for your image.'))
 
@@ -109,19 +109,6 @@ viewer.add_points(
         size = 4,
         n_dimensional = True,
 )
-
-# saving images
-save_image = str(input('Would you like to save any of the images? Y or N')).upper()
-if save_image == 'Y':
-    image_name = str(input('Please input the name of the layer in napari that you would like to export. This is case sensitive. \n'
-    'If you would like to save all of them, type "All".'))
-    if image_name == 'All':
-        save_layers(path, viewer.layers)
-        print('Images will be saved in the folder provided previously.')
-    else:
-        layers.save(path, image_name)
-        print('The image will be saved in the folder provided previously.')
-
 
 # exporting properties
 
