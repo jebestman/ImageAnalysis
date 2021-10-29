@@ -29,7 +29,7 @@ def add_to_viewer(layer_name):
 # adding the raw image to the viewer.
 add_to_viewer(data)
 
-view = str(input('Would you like to view the individual layers ater each operation? Note: It can potential slow down the program \n'
+view = str(input('Would you like to view the individual layers after each operation? Note: It can potential slow down the program \n'
 'if that is done. Otherwise, it will only show you the mask, the mask after morphological operations, labels, and points. Y or N')).upper()
 
 # rescaled intensity
