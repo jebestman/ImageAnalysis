@@ -1,4 +1,4 @@
-# ImageAnalysis
+# Image Analysis
 Authors: A. Hardy, A.Ramakrishnan, J. Bestman
 
 # dependencies
