@@ -39,4 +39,6 @@ df = pd.DataFrame(props).set_index('label')
 name = str(input('What would you like to name the file?: '))+".xlsx"
 save_location = path + '\\' + name
 df.to_excel(save_location)
-print('The file has been saved in the same folder as the image.') ```
+print('The file has been saved in the same folder as the image.') 
+```
+
