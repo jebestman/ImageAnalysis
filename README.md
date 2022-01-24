@@ -23,6 +23,8 @@ It is recommended that you close the napari viewer after running each image fold
 
 Image is cropped to conserve memory and also focus the program on the cell of interest. The skeleton file isolates results to the radial process. 
 
+Image_Processing.py and main.py must be in the same directory.
+
 To run main.py through the command line:
 ```
 python main.py
