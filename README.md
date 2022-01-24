@@ -21,7 +21,7 @@ The **main.py** file is an example usage of the image processing python script. 
 
 It is recommended that you close the napari viewer after running each image folder as a new one will be initiated with each run of main.py. 
 
-Image is cropped to conserve memory and also focus the program on the cell of interest. The skeleton file isolates results to the radial process. 
+Image is cropped to conserve memory and also focus the program on the cell of interest. The skeleton file isolates results to the radial process. Image_Processing.py prints a line following the completion of a processing step.
 
 Image_Processing.py and main.py must be in the same directory.
 
